@@ -1,21 +1,30 @@
 locals {
-  account_vars = read_terragrunt_config(find_in_parent_folders("tier.hcl"))
-  env_vars = read_terragrunt_config(find_in_parent_folders("env.hcl"))
-  region_vars = read_terragrunt_config(find_in_parent_folders("regional.hcl"))
-  common_vars = read_terragrunt_config(find_in_parent_folders("_env/common.hcl"))
+  default_yaml_path = find_in_parent_folders("empty.yaml")
+  def = merge(
+    {
+      enable_secrets = true
+    },
+    yamldecode(
+      file(find_in_parent_folders("tier.yaml", local.default_yaml_path)),
+    ),
+    yamldecode(
+      file(find_in_parent_folders("env.yaml", local.default_yaml_path)),
+    ),
+    yamldecode(
+      file(find_in_parent_folders("regional.yaml", local.default_yaml_path)),
+    ),
+    yamldecode(
+      file(find_in_parent_folders("_env/common.yaml", local.default_yaml_path)),
+    ),
+    #yamldecode(
+    #  file("${get_terragrunt_dir()}/deploy.yaml"),
+    #)
+  )
 
-  # Extract the variables we need for easy access
-  account_id        = local.account_vars.locals.account_id
-  tier              = local.account_vars.locals.tier
-  provider_account  = local.account_vars.locals.provider_account
-  env               = local.env_vars.locals.env
-  environment       = local.env_vars.locals.environment
-  region            = local.region_vars.locals.region
-  rgn               = local.region_vars.locals.rgn
-  default_tags      = merge(local.common_vars.locals.default_tags, 
-	{ "provider_account" : local.account_vars.locals.provider_account, 
-	"Env" : local.env_vars.locals.env, "Environment" : local.env_vars.locals.env, 
-	"Rgn": local.region_vars.locals.rgn , "Tier" : local.account_vars.locals.tier })
+  default_tags      = merge(local.def.default_tags, 
+	{ "provider_account" : local.def.provider_account, 
+	"Env" : local.def.env, "Environment" : local.def.env, 
+	"Rgn": local.def.rgn , "Tier" : local.def.tier })
 
 }
 
@@ -24,12 +33,10 @@ generate "provider" {
   if_exists = "overwrite_terragrunt"
   contents = <<EOF
 provider "aws" {
-  #source = "hashicorp/aws" 
-  #version = "5.40.0"
   assume_role {
-    role_arn = "arn:aws:iam::${local.account_id}:role/Admin"
+    role_arn = "arn:aws:iam::${local.def.account_id}:role/Admin"
   }
-  region = "${local.region}"
+  region = "${local.def.region}"
 }
 EOF
 }
@@ -45,7 +52,7 @@ remote_state {
     bucket         = "c9-util-terragrunt"
     key            = "${path_relative_to_include()}/terraform.tfstate"
     region         = "us-east-1"
-    encrypt        = false
+    encrypt        = true
     dynamodb_table = "my-lock-table"
     acl            = "bucket-owner-full-control"
     role_arn = "arn:aws:iam::305658029247:role/Admin"
@@ -55,9 +62,21 @@ remote_state {
 
 
 inputs = merge(
-  local.account_vars.locals,
-  local.env_vars.locals,
-  local.region_vars.locals,
-  local.default_tags,
-)
+    yamldecode(
+      file(find_in_parent_folders("tier.yaml", local.default_yaml_path)),
+    ),
+    yamldecode(
+      file(find_in_parent_folders("env.yaml", local.default_yaml_path)),
+    ),
+    yamldecode(
+      file(find_in_parent_folders("regional.yaml", local.default_yaml_path)),
+    ),
+    yamldecode(
+      file(find_in_parent_folders("_env/common.yaml", local.default_yaml_path)),
+    ),
+    #yamldecode(
+    #  file("${get_terragrunt_dir()}/deploy.yaml"),
+    #)
+  )
+
 

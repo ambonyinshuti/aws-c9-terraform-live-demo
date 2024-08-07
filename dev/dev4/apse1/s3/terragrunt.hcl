@@ -18,12 +18,13 @@ inputs = {
     tags = "${include.root.locals.default_tags}" 
   }
 
-  items = {
+  
+  items = {  
     bucket1 = {
-      bucket = "c9-${include.root.locals.env}-${include.root.locals.rgn}-testterragrunt1"
+      bucket = "c9-${include.root.locals.def.env}-${include.root.locals.def.rgn}-testterragrunt1-yaml"
     }
     bucket2 = {
-      bucket = "c9-${include.root.locals.env}-${include.root.locals.rgn}-testterragrunt3"
+      bucket = "c9-${include.root.locals.def.env}-${include.root.locals.def.rgn}-testterragrunt3-yaml"
       tags = merge("${include.root.locals.default_tags}", { Secure = "probably" })
     }
   }
