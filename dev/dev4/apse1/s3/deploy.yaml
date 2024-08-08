@@ -1,0 +1,6 @@
+items: { 
+  "bucket1": { "bucket" : "c9-dev4-use1-testterragrunt1-yaml" },
+  "bucket2": { "bucket" : "c9-dev4-use1-testterragrunt3-yaml" },
+  "bucket3": { "bucket" : "c9-dev4-use1-testterragrunt4-yaml" }
+}
+

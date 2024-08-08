@@ -1,3 +1,4 @@
+
 include "root" {
   path = find_in_parent_folders()
   expose = true
@@ -18,15 +19,6 @@ inputs = {
     tags = "${include.root.locals.default_tags}" 
   }
 
-  
-  items = {  
-    bucket1 = {
-      bucket = "c9-${include.root.locals.def.env}-${include.root.locals.def.rgn}-testterragrunt1-yaml"
-    }
-    bucket2 = {
-      bucket = "c9-${include.root.locals.def.env}-${include.root.locals.def.rgn}-testterragrunt3-yaml"
-      tags = merge("${include.root.locals.default_tags}", { Secure = "probably" })
-    }
-  }
+  items = "${include.root.locals.def.items}"
 }
 

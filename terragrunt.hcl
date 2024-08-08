@@ -16,9 +16,9 @@ locals {
     yamldecode(
       file(find_in_parent_folders("_env/common.yaml", local.default_yaml_path)),
     ),
-    #yamldecode(
-    #  file("${get_terragrunt_dir()}/deploy.yaml"),
-    #)
+    yamldecode(
+      file("${get_terragrunt_dir()}/deploy.yaml"),
+    )
   )
 
   default_tags      = merge(local.def.default_tags, 
@@ -74,9 +74,9 @@ inputs = merge(
     yamldecode(
       file(find_in_parent_folders("_env/common.yaml", local.default_yaml_path)),
     ),
-    #yamldecode(
-    #  file("${get_terragrunt_dir()}/deploy.yaml"),
-    #)
+    yamldecode(
+      file("${get_terragrunt_dir()}/deploy.yaml"),
+    )
   )
 
 
