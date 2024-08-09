@@ -23,15 +23,6 @@ inputs = {
     tags = "${include.root.locals.default_tags}" 
   }
 
-  items = merge({
-    bucket1 = {
-      bucket = "c9-${include.root.locals.env}-${include.root.locals.rgn}-testterragrunt1"
-    }
-    bucket2 = {
-      bucket = "c9-${include.root.locals.env}-${include.root.locals.rgn}-testterragrunt3"
-      tags = merge("${include.root.locals.default_tags}", { Secure = "probably" })
-    }
-
-   }, "${include.s3.locals.s3}")
+  items = merge({}, "${include.s3.locals.s3}")
 }
 

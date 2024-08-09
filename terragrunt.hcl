@@ -17,6 +17,11 @@ locals {
 	"Env" : local.env_vars.locals.env, "Environment" : local.env_vars.locals.env, 
 	"Rgn": local.region_vars.locals.rgn , "Tier" : local.account_vars.locals.tier })
 
+ # s3 = {
+ #   bucket-common-1 = {
+ #     bucket = "c9-${local.env}-${local.rgn}-failer-ar-terragrunt1"
+ #   }
+ # }
 }
 
 generate "provider" {

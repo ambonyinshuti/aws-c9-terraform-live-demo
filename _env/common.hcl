@@ -11,5 +11,6 @@ locals {
     "ap-southeast-1": "apse1",
     "ap-southeast-2": "apse2"
   }
+
 }
 
