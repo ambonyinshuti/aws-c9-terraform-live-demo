@@ -14,13 +14,9 @@
 
 #1. Clone the repository
 
-#2. Add a new bucket in the env and region you want (i.e dev4/use1)
+#2. Add a new common bucket for all tiers (i.e edit this file _envcommon/s3-buckets.yaml) 
 
-#3. Add the line below in items block in this file dev4/use1/s3/terragrunt.hcl
-
-    bucket3 = {
-      bucket = "c9-${include.root.locals.env}-${include.root.locals.rgn}-demo1"
-    }
+#3. Add a new bucket dedicated to a region (i.e edit this file dev/dev4/use1/s3/deploy.yaml)
 
 #4. Authenticate with aws-login script with jenkins role
 

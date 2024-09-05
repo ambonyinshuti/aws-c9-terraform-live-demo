@@ -14,7 +14,7 @@ locals {
       file(find_in_parent_folders("regional.yaml", local.default_yaml_path)),
     ),
     yamldecode(
-      file(find_in_parent_folders("_env/common.yaml", local.default_yaml_path)),
+      file(find_in_parent_folders("_envcommon/common.yaml", local.default_yaml_path)),
     ),
     yamldecode(
       file("${get_terragrunt_dir()}/deploy.yaml"),
@@ -25,6 +25,7 @@ locals {
 	{ "provider_account" : local.def.provider_account, 
 	"Env" : local.def.env, "Environment" : local.def.env, 
 	"Rgn": local.def.rgn , "Tier" : local.def.tier })
+  convention-naming = "c9-${local.def.env}-${local.def.rgn}"
 
 }
 
@@ -72,7 +73,7 @@ inputs = merge(
       file(find_in_parent_folders("regional.yaml", local.default_yaml_path)),
     ),
     yamldecode(
-      file(find_in_parent_folders("_env/common.yaml", local.default_yaml_path)),
+      file(find_in_parent_folders("_envcommon/common.yaml", local.default_yaml_path)),
     ),
     yamldecode(
       file("${get_terragrunt_dir()}/deploy.yaml"),
